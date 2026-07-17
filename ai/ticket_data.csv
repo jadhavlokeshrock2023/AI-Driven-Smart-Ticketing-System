@@ -1,0 +1,28 @@
+description,category,priority
+"My internet is not working",technical,high
+"Website is showing error",technical,medium
+"I cannot login to my account",technical,high
+"My account is hacked",technical,urgent
+"My payment failed",billing,high
+"Money deducted but transaction failed",billing,urgent
+"I want refund",billing,medium
+"How can I change my password",general,low
+"I need information about service",general,low
+"App is crashing frequently",technical,high
+description,category,priority
+
+"My account is hacked",technical,urgent
+
+"Someone accessed my account",technical,urgent
+
+"My account is compromised",technical,urgent
+
+"I cannot access my account and someone changed password",technical,urgent
+
+"Security breach in my account",technical,urgent
+
+"My payment was stolen",billing,urgent
+
+"Money deducted twice",billing,urgent
+
+"Critical payment failure",billing,urgent

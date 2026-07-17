@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+AI Ticket Analysis Result
+</title>
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+rel="stylesheet">
+
+
+<style>
+
+body{
+
+    background:#f5f7fb;
+
+}
+
+
+.card{
+
+    border-radius:15px;
+
+}
+
+
+.badge{
+
+    font-size:14px;
+
+}
+
+
+.header-card{
+
+    background:linear-gradient(
+        135deg,
+        #0d6efd,
+        #6610f2
+    );
+
+    color:white;
+
+    border-radius:15px;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+
+
+<body>
+
+
+
+<div class="container py-5">
+
+
+
+
+
+<!-- Header -->
+
+
+<div class="card header-card shadow mb-4">
+
+
+<div class="card-body text-center">
+
+
+<h1>
+
+🤖 AI Ticket Analysis Result
+
+</h1>
+
+
+<p>
+
+Smart Ticket Classification & Similarity Detection
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Ticket Information -->
+
+
+<div class="card shadow mb-4">
+
+
+<div class="card-body">
+
+
+<h3>
+
+🎫 Ticket Created Successfully
+
+</h3>
+
+
+<hr>
+
+
+
+<div class="row">
+
+
+<div class="col-md-6">
+
+
+<p>
+
+<strong>
+Ticket ID:
+</strong>
+
+#{{ticket.id}}
+
+</p>
+
+
+<p>
+
+<strong>
+Title:
+</strong>
+
+{{ticket.title}}
+
+</p>
+
+
+<p>
+
+<strong>
+Customer:
+</strong>
+
+{{ticket.customer.username}}
+
+</p>
+
+
+</div>
+
+
+
+<div class="col-md-6">
+
+
+<p>
+
+<strong>
+Assigned Agent:
+</strong>
+
+
+{% if ticket.assigned_agent %}
+
+
+{{ticket.assigned_agent.username}}
+
+
+{% else %}
+
+
+Not Assigned
+
+
+{% endif %}
+
+
+</p>
+
+
+
+
+<p>
+
+<strong>
+Status:
+</strong>
+
+
+<span class="badge bg-primary">
+
+{{ticket.status}}
+
+</span>
+
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<hr>
+
+
+
+<h5>
+
+Issue Description
+
+</h5>
+
+
+
+<div class="alert alert-light border">
+
+
+{{ticket.description}}
+
+
+</div>
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- AI Prediction Cards -->
+
+
+<div class="row mb-4">
+
+
+
+
+
+<!-- Category -->
+
+
+<div class="col-md-4">
+
+
+<div class="card shadow text-center p-3">
+
+
+<h5>
+
+📂 Category
+
+</h5>
+
+
+
+<span class="badge bg-primary">
+
+{{ticket.category}}
+
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- Priority -->
+
+
+<div class="col-md-4">
+
+
+<div class="card shadow text-center p-3">
+
+
+<h5>
+
+⚠ Priority
+
+</h5>
+
+
+
+{% if ticket.priority == "urgent" %}
+
+
+<span class="badge bg-dark">
+
+🚨 Urgent
+
+</span>
+
+
+
+{% elif ticket.priority == "high" %}
+
+
+<span class="badge bg-danger">
+
+🔴 High
+
+</span>
+
+
+
+{% elif ticket.priority == "medium" %}
+
+
+<span class="badge bg-warning text-dark">
+
+🟡 Medium
+
+</span>
+
+
+
+{% else %}
+
+
+<span class="badge bg-success">
+
+🟢 Low
+
+</span>
+
+
+{% endif %}
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Sentiment -->
+
+
+<div class="col-md-4">
+
+
+<div class="card shadow text-center p-3">
+
+
+<h5>
+
+😊 Sentiment
+
+</h5>
+
+
+
+
+{% if ticket.sentiment == "Positive" %}
+
+
+<span class="badge bg-success">
+
+😊 Positive
+
+</span>
+
+
+
+{% elif ticket.sentiment == "Negative" %}
+
+
+<span class="badge bg-danger">
+
+😡 Negative
+
+</span>
+
+
+
+{% else %}
+
+
+<span class="badge bg-secondary">
+
+😐 Neutral
+
+</span>
+
+
+
+{% endif %}
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Similar Ticket -->
+
+
+
+{% if similar %}
+
+
+
+<div class="card shadow border-warning mb-4">
+
+
+<div class="card-body">
+
+
+<h3 class="text-warning">
+
+⚠ Similar Ticket Found
+
+</h3>
+
+
+
+<hr>
+
+
+
+<p>
+
+AI detected a previous ticket with similar problem.
+
+</p>
+
+
+
+
+<div class="alert alert-warning">
+
+
+<p>
+
+<strong>
+Previous Ticket ID:
+</strong>
+
+#{{similar.ticket.id}}
+
+</p>
+
+
+
+<p>
+
+<strong>
+Similarity Score:
+</strong>
+
+{{similar.score}}
+
+</p>
+
+
+
+
+<p>
+
+<strong>
+Previous Issue:
+</strong>
+
+</p>
+
+
+{{similar.ticket.description}}
+
+
+
+</div>
+
+
+
+
+
+<a href="{% url 'ticket_detail' similar.ticket.id %}"
+
+class="btn btn-warning">
+
+
+<i class="bi bi-eye"></i>
+
+View Previous Ticket
+
+
+</a>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+{% else %}
+
+
+
+<div class="alert alert-success shadow">
+
+
+<h4>
+
+✅ No Similar Ticket Found
+
+</h4>
+
+
+
+<p>
+
+This is a new customer issue.
+
+</p>
+
+
+
+</div>
+
+
+
+{% endif %}
+
+
+
+
+
+
+
+
+
+<!-- Buttons -->
+
+
+<div class="text-center mt-4">
+
+
+<a href="{% url 'my_tickets' %}"
+
+class="btn btn-primary me-2">
+
+
+<i class="bi bi-ticket"></i>
+
+My Tickets
+
+
+</a>
+
+
+
+
+
+<a href="{% url 'create_ticket' %}"
+
+class="btn btn-success me-2">
+
+
+<i class="bi bi-plus-circle"></i>
+
+Create New Ticket
+
+
+</a>
+
+
+
+
+
+<a href="{% url 'dashboard' %}"
+
+class="btn btn-dark">
+
+
+<i class="bi bi-house"></i>
+
+Dashboard
+
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</body>
+
+</html>

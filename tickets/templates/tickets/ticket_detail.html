@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>
+Ticket Detail
+</title>
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+</head>
+
+
+<body class="bg-light">
+
+
+<div class="container mt-5">
+
+
+<h1>
+🎫 Ticket Details
+</h1>
+
+
+<div class="card mt-4">
+
+
+<div class="card-body">
+
+
+<h3>
+{{ticket.title}}
+</h3>
+
+
+<p>
+<b>Description:</b>
+{{ticket.description}}
+</p>
+
+
+<hr>
+
+
+<p>
+<b>Customer:</b>
+{{ticket.customer.username}}
+</p>
+
+
+<p>
+<b>Category:</b>
+{{ticket.category}}
+</p>
+
+
+<p>
+<b>Priority:</b>
+{{ticket.priority}}
+</p>
+
+
+<p>
+<b>Sentiment:</b>
+{{ticket.sentiment}}
+</p>
+
+
+
+<p>
+<b>Status:</b>
+{{ticket.status}}
+</p>
+
+<hr>
+
+
+<h3>
+💬 Conversation
+</h3>
+
+
+
+{% for comment in comments %}
+
+
+<div class="card mb-2">
+
+<div class="card-body">
+
+
+<b>
+{{comment.user.username}}
+</b>
+
+
+<p>
+{{comment.message}}
+</p>
+
+
+<small>
+{{comment.created_at}}
+</small>
+
+
+</div>
+
+</div>
+
+
+{% empty %}
+
+
+<p>
+No messages yet
+</p>
+
+
+{% endfor %}
+
+
+
+
+<form method="POST"
+action="{% url 'add_comment' ticket.id %}">
+
+
+{% csrf_token %}
+
+
+<textarea 
+name="message"
+class="form-control"
+placeholder="Write reply..."
+required></textarea>
+
+
+<br>
+
+
+<button class="btn btn-success">
+
+Send Reply
+
+</button>
+
+
+</form>
+
+</div>
+
+</div>
+
+
+
+<br>
+
+
+<h3>
+Update Status
+</h3>
+
+
+<form method="POST" 
+action="{% url 'update_ticket_status' ticket.id %}">
+
+
+{% csrf_token %}
+
+
+<select name="status" class="form-control">
+
+
+<option value="open">
+Open
+</option>
+
+
+<option value="progress">
+In Progress
+</option>
+
+
+<option value="resolved">
+Resolved
+</option>
+
+
+<option value="closed">
+Closed
+</option>
+
+
+</select>
+
+
+<br>
+
+
+<button class="btn btn-primary">
+
+Update
+
+</button>
+
+
+</form>
+
+
+
+</div>
+
+
+</body>
+
+</html>

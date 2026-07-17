@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+AI Agent Dashboard
+</title>
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+</head>
+
+
+
+<body class="bg-light">
+
+
+<div class="container py-5">
+
+
+
+<!-- HEADER -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+
+<div>
+
+
+<h1 class="fw-bold">
+
+🤖 AI Agent Dashboard
+
+</h1>
+
+
+<p class="text-muted">
+
+Smart Ticket Management With Artificial Intelligence
+
+</p>
+
+
+</div>
+
+
+
+<div class="card shadow border-0 p-3 text-center">
+
+
+<h3 class="text-primary">
+
+{{tickets|length}}
+
+</h3>
+
+
+<small>
+
+Total Tickets
+
+</small>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- AI INFO -->
+
+
+<div class="alert alert-primary shadow-sm">
+
+
+<h5>
+
+🤖 AI Recommendation System
+
+</h5>
+
+
+<p class="mb-0">
+
+
+AI automatically analyzes:
+
+<b>
+Category,
+Priority,
+Sentiment
+</b>
+
+and recommends ticket handling order.
+
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- SEARCH FILTER -->
+
+
+<div class="card shadow-sm border-0 mb-4">
+
+
+<div class="card-body">
+
+
+<form method="GET"
+class="row g-3">
+
+
+
+<div class="col-md-5">
+
+
+<input
+
+type="text"
+
+name="search"
+
+class="form-control"
+
+placeholder="🔍 Search ticket..."
+
+value="{{request.GET.search}}"
+
+>
+
+
+</div>
+
+
+
+
+
+<div class="col-md-3">
+
+
+<select name="status"
+class="form-select">
+
+
+<option value="">
+
+All Status
+
+</option>
+
+
+<option value="open">
+
+Open
+
+</option>
+
+
+<option value="progress">
+
+In Progress
+
+</option>
+
+
+<option value="resolved">
+
+Resolved
+
+</option>
+
+
+<option value="closed">
+
+Closed
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+<div class="col-md-2">
+
+
+<select name="priority"
+
+class="form-select">
+
+
+<option value="">
+
+Priority
+
+</option>
+
+
+<option value="urgent">
+
+Urgent
+
+</option>
+
+
+<option value="high">
+
+High
+
+</option>
+
+
+<option value="medium">
+
+Medium
+
+</option>
+
+
+<option value="low">
+
+Low
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+<div class="col-md-2">
+
+
+<button class="btn btn-primary w-100">
+
+
+<i class="fa fa-search"></i>
+
+Filter
+
+
+</button>
+
+
+</div>
+
+
+</form>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- TICKET LIST -->
+
+
+{% for ticket in tickets %}
+
+
+
+<div class="card shadow border-0 mb-4">
+
+
+<div class="card-body">
+
+
+
+<div class="row">
+
+
+
+<!-- LEFT SIDE -->
+
+
+<div class="col-md-8">
+
+
+
+<h3 class="fw-bold">
+
+{{ticket.title}}
+
+</h3>
+
+
+
+
+<p class="text-muted">
+
+{{ticket.description}}
+
+</p>
+
+
+
+<hr>
+
+
+
+<div class="row">
+
+
+<div class="col-md-6">
+
+
+<p>
+
+<b>
+Customer:
+</b>
+
+{{ticket.customer.username}}
+
+</p>
+
+
+
+<p>
+
+<b>
+Category:
+</b>
+
+{{ticket.category}}
+
+</p>
+
+
+<p>
+
+<b>
+Created:
+</b>
+
+{{ticket.created_at}}
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+<div class="col-md-6">
+
+
+<p>
+
+
+<b>
+Assigned Agent:
+</b>
+
+
+{% if ticket.assigned_agent %}
+
+
+{{ticket.assigned_agent.username}}
+
+
+{% else %}
+
+
+Not Assigned
+
+
+{% endif %}
+
+
+</p>
+
+
+
+<p>
+
+<b>
+Ticket ID:
+</b>
+
+#{{ticket.id}}
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- RIGHT SIDE -->
+
+
+<div class="col-md-4 text-center">
+
+
+
+
+
+
+<!-- PRIORITY -->
+
+
+<h6>
+
+Priority
+
+</h6>
+
+
+
+{% if ticket.priority == "urgent" %}
+
+
+<span class="badge bg-dark fs-6">
+
+🚨 Urgent
+
+</span>
+
+
+{% elif ticket.priority == "high" %}
+
+
+<span class="badge bg-danger fs-6">
+
+🔴 High
+
+</span>
+
+
+
+{% elif ticket.priority == "medium" %}
+
+
+<span class="badge bg-warning text-dark fs-6">
+
+🟡 Medium
+
+</span>
+
+
+
+{% else %}
+
+
+<span class="badge bg-success fs-6">
+
+🟢 Low
+
+</span>
+
+
+
+{% endif %}
+
+
+
+
+
+<br><br>
+
+
+
+
+
+
+
+<!-- STATUS -->
+
+
+<h6>
+
+Status
+
+</h6>
+
+
+{% if ticket.status == "open" %}
+
+
+<span class="badge bg-primary">
+
+Open
+
+</span>
+
+
+
+{% elif ticket.status == "progress" %}
+
+
+<span class="badge bg-warning text-dark">
+
+In Progress
+
+</span>
+
+
+
+{% elif ticket.status == "resolved" %}
+
+
+<span class="badge bg-success">
+
+Resolved
+
+</span>
+
+
+
+{% else %}
+
+
+<span class="badge bg-secondary">
+
+Closed
+
+</span>
+
+
+
+{% endif %}
+
+
+
+
+
+<br><br>
+
+
+
+
+
+
+
+<!-- SENTIMENT -->
+
+
+<h6>
+
+AI Sentiment
+
+</h6>
+
+
+{% if ticket.sentiment == "Positive" %}
+
+
+<span class="badge bg-success">
+
+😊 Positive
+
+</span>
+
+
+{% elif ticket.sentiment == "Negative" %}
+
+
+<span class="badge bg-danger">
+
+😡 Negative
+
+</span>
+
+
+{% else %}
+
+
+<span class="badge bg-info">
+
+😐 Neutral
+
+</span>
+
+
+{% endif %}
+
+
+
+
+
+<br><br>
+
+
+
+
+
+
+<!-- AI RECOMMENDATION -->
+
+
+<div class="alert alert-light border">
+
+
+<h6>
+
+🤖 AI Recommendation
+
+</h6>
+
+
+
+{% if ticket.priority == "urgent" %}
+
+
+Handle immediately.
+
+
+{% elif ticket.priority == "high" %}
+
+
+Priority response required.
+
+
+{% elif ticket.priority == "medium" %}
+
+
+Resolve within today.
+
+
+{% else %}
+
+
+Normal queue handling.
+
+
+{% endif %}
+
+
+
+</div>
+
+
+
+
+
+
+
+<a href="{% url 'ticket_detail' ticket.id %}"
+
+class="btn btn-primary">
+
+
+<i class="fa fa-eye"></i>
+
+Open
+
+
+</a>
+
+
+
+
+<a href="{% url 'ai_reply' ticket.id %}"
+
+class="btn btn-outline-success">
+
+
+🤖 AI Reply
+
+
+</a>
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+{% empty %}
+
+
+
+<div class="alert alert-danger text-center">
+
+
+<h4>
+
+No Tickets Found
+
+</h4>
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+
+
+</div>
+
+
+
+</body>
+
+
+</html>
