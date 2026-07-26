@@ -199,19 +199,27 @@ def my_tickets(request):
 # AGENT DASHBOARD
 # ==================================================
 
+# ==================================================
+# AGENT DASHBOARD
+# ==================================================
+
 @login_required
 def agent_tickets(request):
 
 
-    tickets = Ticket.objects.all()
+    # Show only tickets assigned to logged-in agent
 
-
-
-    # Search
-
-    search = request.GET.get(
-        "search"
+    tickets = Ticket.objects.filter(
+        assigned_agent=request.user
     )
+
+
+
+    # =========================
+    # SEARCH FILTER
+    # =========================
+
+    search = request.GET.get("search")
 
 
     if search:
@@ -222,11 +230,11 @@ def agent_tickets(request):
 
 
 
-    # Status filter
+    # =========================
+    # STATUS FILTER
+    # =========================
 
-    status = request.GET.get(
-        "status"
-    )
+    status = request.GET.get("status")
 
 
     if status:
@@ -237,11 +245,11 @@ def agent_tickets(request):
 
 
 
-    # Priority filter
+    # =========================
+    # PRIORITY FILTER
+    # =========================
 
-    priority = request.GET.get(
-        "priority"
-    )
+    priority = request.GET.get("priority")
 
 
     if priority:
@@ -251,6 +259,8 @@ def agent_tickets(request):
         )
 
 
+
+    # Latest tickets first
 
     tickets = tickets.order_by(
         "-created_at"
@@ -262,7 +272,7 @@ def agent_tickets(request):
         request,
         "tickets/agent_tickets.html",
         {
-            "tickets":tickets
+            "tickets": tickets
         }
     )
 
@@ -508,3 +518,7 @@ def ai_reply(request,id):
             "reply":reply
         }
     )
+from django.shortcuts import render
+
+def ticket_home(request):
+    return render(request, "home.html")

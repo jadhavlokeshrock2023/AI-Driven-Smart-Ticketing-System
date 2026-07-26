@@ -1,1 +1,1 @@
-web: gunicorn smart_ticketing.wsgi
+web: gunicorn smart_ticketing.wsgi:application

@@ -21,33 +21,88 @@ rel="stylesheet">
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 
+<style>
+
+body{
+    background:#f1f5f9;
+}
+
+
+.top-navbar{
+
+    background:white;
+
+    padding:20px 30px;
+
+    border-radius:20px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+    margin-bottom:30px;
+
+}
+
+
+.logout-btn{
+
+    border-radius:12px;
+
+    font-weight:600;
+
+}
+
+
+.card{
+
+    border-radius:20px;
+
+}
+
+
+.badge{
+
+    padding:10px 15px;
+
+    border-radius:12px;
+
+}
+
+
+</style>
+
+
 </head>
 
 
 
-<body class="bg-light">
+<body>
 
 
 <div class="container py-5">
 
 
 
-<!-- HEADER -->
+<!-- ================= AGENT NAVBAR ================= -->
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div class="top-navbar">
+
+
+<div class="d-flex justify-content-between align-items-center">
+
 
 
 <div>
 
 
-<h1 class="fw-bold">
+<h1 class="fw-bold mb-1">
 
 🤖 AI Agent Dashboard
 
 </h1>
 
 
-<p class="text-muted">
+<p class="text-muted mb-0">
 
 Smart Ticket Management With Artificial Intelligence
 
@@ -58,7 +113,72 @@ Smart Ticket Management With Artificial Intelligence
 
 
 
-<div class="card shadow border-0 p-3 text-center">
+
+<div class="d-flex align-items-center gap-3">
+
+
+
+<div class="text-end">
+
+
+<h6 class="mb-0">
+
+{{request.user.username}}
+
+</h6>
+
+
+<small class="text-muted">
+
+AI Support Agent
+
+</small>
+
+
+</div>
+
+
+
+
+
+<form method="post" action="{% url 'logout' %}">
+
+
+{% csrf_token %}
+
+
+<button class="btn btn-danger logout-btn">
+
+
+<i class="fa fa-sign-out-alt"></i>
+
+Logout
+
+
+</button>
+
+
+</form>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- TOTAL TICKET CARD -->
+
+
+<div class="card shadow border-0 p-4 text-center mb-4">
 
 
 <h3 class="text-primary">
@@ -73,10 +193,6 @@ Smart Ticket Management With Artificial Intelligence
 Total Tickets
 
 </small>
-
-
-</div>
-
 
 
 </div>
@@ -317,9 +433,6 @@ Filter
 
 
 
-<!-- LEFT SIDE -->
-
-
 <div class="col-md-8">
 
 
@@ -345,17 +458,9 @@ Filter
 
 
 
-<div class="row">
-
-
-<div class="col-md-6">
-
-
 <p>
 
-<b>
-Customer:
-</b>
+<b>Customer:</b>
 
 {{ticket.customer.username}}
 
@@ -365,68 +470,17 @@ Customer:
 
 <p>
 
-<b>
-Category:
-</b>
+<b>Category:</b>
 
 {{ticket.category}}
 
 </p>
 
 
-<p>
-
-<b>
-Created:
-</b>
-
-{{ticket.created_at}}
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-<div class="col-md-6">
-
 
 <p>
 
-
-<b>
-Assigned Agent:
-</b>
-
-
-{% if ticket.assigned_agent %}
-
-
-{{ticket.assigned_agent.username}}
-
-
-{% else %}
-
-
-Not Assigned
-
-
-{% endif %}
-
-
-</p>
-
-
-
-<p>
-
-<b>
-Ticket ID:
-</b>
+<b>Ticket ID:</b>
 
 #{{ticket.id}}
 
@@ -437,31 +491,15 @@ Ticket ID:
 </div>
 
 
-</div>
-
-
-
-
-</div>
 
 
 
 
 
-
-
-
-<!-- RIGHT SIDE -->
 
 
 <div class="col-md-4 text-center">
 
-
-
-
-
-
-<!-- PRIORITY -->
 
 
 <h6>
@@ -474,45 +512,30 @@ Priority
 
 {% if ticket.priority == "urgent" %}
 
-
-<span class="badge bg-dark fs-6">
-
+<span class="badge bg-dark">
 🚨 Urgent
-
 </span>
 
 
 {% elif ticket.priority == "high" %}
 
-
-<span class="badge bg-danger fs-6">
-
+<span class="badge bg-danger">
 🔴 High
-
 </span>
-
 
 
 {% elif ticket.priority == "medium" %}
 
-
-<span class="badge bg-warning text-dark fs-6">
-
+<span class="badge bg-warning text-dark">
 🟡 Medium
-
 </span>
-
 
 
 {% else %}
 
-
-<span class="badge bg-success fs-6">
-
+<span class="badge bg-success">
 🟢 Low
-
 </span>
-
 
 
 {% endif %}
@@ -525,66 +548,16 @@ Priority
 
 
 
-
-
-
-
-<!-- STATUS -->
-
-
 <h6>
-
 Status
-
 </h6>
-
-
-{% if ticket.status == "open" %}
 
 
 <span class="badge bg-primary">
 
-Open
+{{ticket.status}}
 
 </span>
-
-
-
-{% elif ticket.status == "progress" %}
-
-
-<span class="badge bg-warning text-dark">
-
-In Progress
-
-</span>
-
-
-
-{% elif ticket.status == "resolved" %}
-
-
-<span class="badge bg-success">
-
-Resolved
-
-</span>
-
-
-
-{% else %}
-
-
-<span class="badge bg-secondary">
-
-Closed
-
-</span>
-
-
-
-{% endif %}
-
 
 
 
@@ -593,47 +566,29 @@ Closed
 
 
 
-
-
-
-
-<!-- SENTIMENT -->
-
-
 <h6>
-
 AI Sentiment
-
 </h6>
 
 
 {% if ticket.sentiment == "Positive" %}
 
-
 <span class="badge bg-success">
-
 😊 Positive
-
 </span>
 
 
 {% elif ticket.sentiment == "Negative" %}
 
-
 <span class="badge bg-danger">
-
 😡 Negative
-
 </span>
 
 
 {% else %}
 
-
 <span class="badge bg-info">
-
 😐 Neutral
-
 </span>
 
 
@@ -642,48 +597,35 @@ AI Sentiment
 
 
 
-
 <br><br>
 
-
-
-
-
-
-<!-- AI RECOMMENDATION -->
 
 
 <div class="alert alert-light border">
 
 
 <h6>
-
 🤖 AI Recommendation
-
 </h6>
 
 
 
 {% if ticket.priority == "urgent" %}
 
-
 Handle immediately.
 
 
 {% elif ticket.priority == "high" %}
-
 
 Priority response required.
 
 
 {% elif ticket.priority == "medium" %}
 
-
 Resolve within today.
 
 
 {% else %}
-
 
 Normal queue handling.
 
@@ -693,7 +635,6 @@ Normal queue handling.
 
 
 </div>
-
 
 
 
@@ -732,9 +673,7 @@ class="btn btn-outline-success">
 </div>
 
 
-
 </div>
-
 
 
 </div>

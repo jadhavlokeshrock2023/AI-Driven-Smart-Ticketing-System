@@ -1,28 +1,28 @@
-from google import genai
 import os
 from dotenv import load_dotenv
+from google import genai
+
 
 load_dotenv()
-
+print("NEW GEMINI FILE LOADED")
 
 client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
 )
 
 
-def ask_gemini(message):
+def ask_gemini(prompt):
 
     try:
 
         response = client.models.generate_content(
             model="gemini-2.0-flash",
-            contents=message
+            contents=prompt
         )
 
         return response.text
 
+
     except Exception as e:
 
-        print("Gemini Error:", e)
-
-        return "Sorry, AI service is temporarily unavailable."
+        return f"AI Error: {str(e)}"

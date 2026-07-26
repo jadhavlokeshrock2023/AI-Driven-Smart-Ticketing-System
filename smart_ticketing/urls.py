@@ -1,45 +1,47 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.shortcuts import render
-
-
-def home(request):
-    return render(
-        request,
-        "home.html"
-    )
 
 
 urlpatterns = [
-
-    path(
-        "",
-        home,
-        name="home"
-    ),
 
     path(
         "admin/",
         admin.site.urls
     ),
 
+
+    # Accounts
     path(
         "accounts/",
         include("accounts.urls")
     ),
 
+
+    # Tickets
     path(
         "tickets/",
         include("tickets.urls")
     ),
 
+
+    # Chatbot
     path(
         "chatbot/",
         include("chatbot.urls")
     ),
 
+
+    # Dashboard
     path(
-    'dashboard/',
-    include('dashboard.urls')),
+        "dashboard/",
+        include("dashboard.urls")
+    ),
+
+
+    # Home
+    path(
+        "",
+        include("dashboard.urls")
+    ),
 
 ]

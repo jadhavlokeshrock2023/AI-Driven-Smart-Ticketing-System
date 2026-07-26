@@ -13,11 +13,10 @@ from ai.predictor import (
     predict_priority,
 )
 
-from ai.sentiment import (
-    analyze_sentiment,
-)
+from ai.sentiment import analyze_sentiment
 
-from ai.gemini import ask_gemini
+from .groq_ai import ask_groq
+
 
 
 User = get_user_model()
@@ -36,25 +35,22 @@ def chatbot_page(request):
 
     if request.method == "POST":
 
-
         message = request.POST.get(
             "message",
             ""
         ).strip()
 
 
-
         if message:
 
 
-            # =================================
-            # Step 1: Search Knowledge Base
-            # =================================
+            # =====================================
+            # Step 1: Knowledge Base Search
+            # =====================================
 
             knowledge_result = search_solution(
                 message
             )
-
 
 
             if knowledge_result:
@@ -62,7 +58,6 @@ def chatbot_page(request):
 
                 response = f"""
 🧠 Knowledge Base Solution Found
-
 
 📌 Problem:
 {knowledge_result['title']}
@@ -77,23 +72,22 @@ If your issue is not solved, I can create a support ticket.
 """
 
 
-
             else:
 
 
-                # =================================
-                # Step 2: Gemini AI Response
-                # =================================
+                # =====================================
+                # Step 2: Groq AI Response
+                # =====================================
 
-                gemini_reply = ask_gemini(
+                ai_reply = ask_groq(
                     message
                 )
 
 
 
-                # =================================
+                # =====================================
                 # Step 3: AI Analysis
-                # =================================
+                # =====================================
 
                 category = predict_category(
                     message
@@ -111,9 +105,9 @@ If your issue is not solved, I can create a support ticket.
 
 
 
-                # =================================
-                # Step 4: Auto Assign Agent
-                # =================================
+                # =====================================
+                # Step 4: Find Support Agent
+                # =====================================
 
                 agent = User.objects.filter(
                     role="agent"
@@ -121,9 +115,9 @@ If your issue is not solved, I can create a support ticket.
 
 
 
-                # =================================
+                # =====================================
                 # Step 5: Create Ticket
-                # =================================
+                # =====================================
 
                 ticket = Ticket.objects.create(
 
@@ -147,21 +141,24 @@ If your issue is not solved, I can create a support ticket.
 
 
 
+                # =====================================
+                # Final AI Response
+                # =====================================
+
                 response = f"""
-
-🤖 Gemini AI Assistant
-
-
-{gemini_reply}
+🤖 AI Customer Support Assistant
 
 
-=========================
+{ai_reply}
+
+
+━━━━━━━━━━━━━━━━━━
 
 
 🎫 Ticket Created Successfully
 
 
-Ticket ID:
+🆔 Ticket ID:
 #{ticket.id}
 
 
@@ -178,14 +175,13 @@ Ticket ID:
 
 
 Our support team will contact you soon.
-
 """
 
 
 
-            # =================================
-            # Save Chat History
-            # =================================
+            # =====================================
+            # Save Conversation
+            # =====================================
 
             ChatConversation.objects.create(
 
@@ -199,7 +195,9 @@ Our support team will contact you soon.
 
 
 
-    # Chat History
+    # =====================================
+    # Load Chat History
+    # =====================================
 
     chats = ChatConversation.objects.filter(
 

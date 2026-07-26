@@ -1,19 +1,249 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Register</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
+
+
+    <style>
+
+        body{
+
+            min-height:100vh;
+            background:linear-gradient(135deg,#eef4ff,#dbeafe);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-family:Arial, Helvetica, sans-serif;
+
+        }
+
+
+        .register-card{
+
+            width:100%;
+            max-width:500px;
+            border:none;
+            border-radius:22px;
+            overflow:hidden;
+            box-shadow:0 15px 40px rgba(0,0,0,.15);
+
+        }
+
+
+        .card-header{
+
+            background:linear-gradient(135deg,#2563eb,#4f46e5);
+            color:white;
+            text-align:center;
+            padding:30px;
+
+        }
+
+
+        .card-header h2{
+
+            font-weight:bold;
+            margin-bottom:10px;
+
+        }
+
+
+        .card-body{
+
+            padding:40px;
+            background:white;
+
+        }
+
+
+        .form-control{
+
+            border-radius:12px;
+            padding:12px;
+
+        }
+
+
+        label{
+
+            font-weight:600;
+
+        }
+
+
+        .btn-register{
+
+            width:100%;
+            background:#2563eb;
+            color:white;
+            border:none;
+            padding:13px;
+            border-radius:12px;
+            font-size:18px;
+            font-weight:bold;
+
+        }
+
+
+        .btn-register:hover{
+
+            background:#1d4ed8;
+            color:white;
+
+        }
+
+
+        .login-link{
+
+            text-align:center;
+            margin-top:20px;
+
+        }
+
+
+        .login-link a{
+
+            text-decoration:none;
+            color:#2563eb;
+            font-weight:bold;
+
+        }
+
+
+        .feature-box{
+
+            background:#f8fafc;
+            border-radius:15px;
+            padding:15px;
+            margin-bottom:20px;
+
+        }
+
+
+    </style>
+
 </head>
+
+
 <body>
 
-<h2>Create Account</h2>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">
-        Register
-    </button>
-</form>
+<div class="card register-card">
+
+
+    <!-- Header -->
+
+    <div class="card-header">
+
+
+        <h2>
+
+            <i class="bi bi-person-plus-fill"></i>
+
+            Create Account
+
+        </h2>
+
+
+        <p class="mb-0">
+
+            Join AI Smart Ticketing System
+
+        </p>
+
+
+    </div>
+
+
+
+    <!-- Body -->
+
+    <div class="card-body">
+
+
+
+        <div class="feature-box">
+
+
+            <h6>
+
+                🤖 AI Powered Support Platform
+
+            </h6>
+
+
+            <small>
+
+                Create your account to submit tickets,
+                track issues and get intelligent assistance.
+
+            </small>
+
+
+        </div>
+
+
+
+        <form method="post">
+
+
+            {% csrf_token %}
+
+
+            {{ form.as_p }}
+
+
+
+            <button type="submit" class="btn btn-register">
+
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                Register
+
+
+            </button>
+
+
+        </form>
+
+
+
+
+        <div class="login-link">
+
+
+            Already have an account?
+
+            <a href="/accounts/login/">
+
+                Login
+
+            </a>
+
+
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+
 
 </body>
+
 </html>

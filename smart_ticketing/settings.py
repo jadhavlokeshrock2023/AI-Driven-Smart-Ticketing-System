@@ -4,23 +4,29 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# SECURITY
 SECRET_KEY = os.getenv(
-    "um4f6up20+bpyv&^v83=0%vwbnx@#$i75p=@vk!w$m^9f0f(tk"
+    "SECRET_KEY",
+    "django-insecure-change-this"
 )
 
-DEBUG = os.getenv(
-    "DEBUG",
-    "False"
-)=="True"
+
+# LOCAL DEVELOPMENT
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
 
 ALLOWED_HOSTS = [
-    "localhost",
     "127.0.0.1",
+    "localhost",
+    ".onrender.com",
 ]
 
+
+# APPLICATIONS
 
 INSTALLED_APPS = [
 
@@ -31,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Project Apps
     'accounts',
     'tickets',
     'dashboard',
@@ -42,43 +49,47 @@ INSTALLED_APPS = [
 ]
 
 
+# MIDDLEWARE
+
 MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 
-    'django.middleware.security.SecurityMiddleware',
-
-    'django.contrib.sessions.middleware.SessionMiddleware',
-
-    'django.middleware.common.CommonMiddleware',
-
-    'django.middleware.csrf.CsrfViewMiddleware',
-
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-
-    'django.contrib.messages.middleware.MessageMiddleware',
-
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# URL CONFIG
 
 ROOT_URLCONF = 'smart_ticketing.urls'
 
+
+# TEMPLATES
 
 TEMPLATES = [
 
     {
 
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND':
+        'django.template.backends.django.DjangoTemplates',
 
-        'DIRS': [
+        'DIRS':
+        [
             BASE_DIR / "templates"
         ],
 
-        'APP_DIRS': True,
+        'APP_DIRS':
+        True,
 
-        'OPTIONS': {
+        'OPTIONS':
+        {
 
-            'context_processors': [
+            'context_processors':
+            [
 
                 'django.template.context_processors.request',
 
@@ -95,34 +106,31 @@ TEMPLATES = [
 ]
 
 
+# WSGI
+
 WSGI_APPLICATION = 'smart_ticketing.wsgi.application'
 
 
+# DATABASE
+# Local Database (No PostgreSQL required)
+
+import dj_database_url
+
 DATABASES = {
-
-    'default': {
-
-        'ENGINE': 'django.db.backends.postgresql',
-
-        'NAME': 'smart_ticketing_db',
-
-        'USER': 'ticket_admin',
-
-        'PASSWORD': 'Lokesh@123',
-
-        'HOST': 'localhost',
-
-        'PORT': '5432',
-
-    }
-
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+    )
 }
 
 
 
+# PASSWORD VALIDATION
+
 AUTH_PASSWORD_VALIDATORS = []
 
 
+
+# LANGUAGE
 
 LANGUAGE_CODE = 'en-us'
 
@@ -132,36 +140,51 @@ TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
+
 USE_TZ = True
 
 
 
-STATIC_URL = '/static/'
+# STATIC FILES
 
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
-
-    BASE_DIR / "static"
-
+    BASE_DIR / "static",
 ]
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+
+# MEDIA FILES
 
 MEDIA_URL = "/media/"
+
 
 MEDIA_ROOT = BASE_DIR / "media"
 
 
 
-LOGIN_URL = "login"
+# LOGIN SETTINGS
 
-LOGIN_REDIRECT_URL = "dashboard"
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/dashboard/"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
 
-LOGOUT_REDIRECT_URL = "login"
 
-
+# DEFAULT FIELD
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+
+# CUSTOM USER MODEL
+
 AUTH_USER_MODEL = 'accounts.User'
+
+
+import os
+

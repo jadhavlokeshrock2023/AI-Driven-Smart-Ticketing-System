@@ -10,36 +10,316 @@ Customer Dashboard
 {% block content %}
 
 
-<div class="container">
+<style>
 
 
-<!-- Dashboard Header -->
+body{
+background:#f1f5f9;
+}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+
+/* Dashboard */
+
+.dashboard{
+
+display:flex;
+gap:25px;
+
+}
+
+
+/* Sidebar */
+
+
+.sidebar{
+
+width:250px;
+background:#0f172a;
+min-height:85vh;
+border-radius:25px;
+padding:25px;
+color:white;
+
+}
+
+
+.sidebar h3{
+
+font-weight:800;
+
+}
+
+
+.sidebar a{
+
+display:block;
+color:#cbd5e1;
+padding:14px;
+border-radius:12px;
+text-decoration:none;
+margin-top:10px;
+
+}
+
+
+.sidebar a:hover{
+
+background:#2563eb;
+color:white;
+
+}
+
+
+
+
+
+/* Main */
+
+
+.main{
+
+flex:1;
+
+}
+
+
+
+/* Header */
+
+
+.welcome{
+
+background:white;
+padding:30px;
+border-radius:25px;
+
+display:flex;
+justify-content:space-between;
+
+box-shadow:0 10px 30px #0001;
+
+}
+
+
+.welcome h1{
+
+font-weight:800;
+
+}
+
+
+
+
+
+/* Cards */
+
+
+.analytics-card{
+
+background:white;
+padding:25px;
+border-radius:22px;
+box-shadow:0 10px 25px #0001;
+
+}
+
+
+
+.analytics-card h2{
+
+font-weight:800;
+
+}
+
+
+
+.icon{
+
+width:55px;
+height:55px;
+border-radius:15px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:25px;
+
+}
+
+
+
+
+/* Ticket table */
+
+
+.ticket-box{
+
+background:white;
+
+padding:25px;
+
+border-radius:25px;
+
+box-shadow:0 10px 30px #0001;
+
+}
+
+
+
+.table{
+
+vertical-align:middle;
+
+}
+
+
+
+.status{
+
+padding:8px 15px;
+border-radius:20px;
+
+font-size:13px;
+
+}
+
+
+
+</style>
+
+
+
+
+
+
+
+<div class="dashboard">
+
+
+
+<!-- SIDEBAR -->
+
+
+<div class="sidebar">
+
+
+<h3>
+🤖 AI Ticket
+</h3>
+
+
+<hr>
+
+
+<a href="/dashboard/">
+
+<i class="bi bi-grid"></i>
+Dashboard
+
+</a>
+
+
+<a href="/tickets/create/">
+
+<i class="bi bi-plus-circle"></i>
+Create Ticket
+
+</a>
+
+
+
+<a href="/tickets/my/">
+
+<i class="bi bi-ticket"></i>
+My Tickets
+
+</a>
+
+
+
+<a href="/chatbot/">
+
+<i class="bi bi-robot"></i>
+AI Assistant
+
+</a>
+
+
+
+<a href="#">
+
+<i class="bi bi-bar-chart"></i>
+Analytics
+
+</a>
+<a href="{% url 'analytics' %}" class="btn btn-primary">
+    📊 Analytics
+</a>
+
+
+<a href="#">
+
+<i class="bi bi-gear"></i>
+Settings
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="main">
+
+
+
+
+
+<!-- TOP HEADER -->
+
+
+<div class="welcome mb-4">
 
 
 <div>
 
-<h1 class="fw-bold">
-🎫 Customer Dashboard
+<h1>
+
+Good Morning,
+{{request.user.username}}
+
+👋
+
 </h1>
 
+
 <p class="text-muted">
-AI Powered Smart Customer Support System
+
+AI Powered Customer Support Automation
+
 </p>
 
 </div>
 
 
 
-<a href="{% url 'create_ticket' %}" 
-class="btn btn-primary btn-lg">
+<div>
 
-<i class="bi bi-plus-circle"></i>
 
-Create Ticket
+<img src="https://i.pravatar.cc/60"
 
-</a>
+class="rounded-circle">
+
+
+</div>
 
 
 </div>
@@ -48,35 +328,36 @@ Create Ticket
 
 
 
-<!-- Dashboard Cards -->
+
+
+
+<!-- ANALYTICS -->
+
+
 
 <div class="row g-4">
 
 
 
-<!-- Total Tickets -->
-
-
 <div class="col-md-4">
 
 
-<div class="card shadow border-0 p-4 text-center">
+<div class="analytics-card">
 
 
-<div class="display-4 text-primary">
+<div class="icon bg-primary bg-opacity-10 text-primary">
 
-<i class="bi bi-ticket-perforated"></i>
+
+<i class="bi bi-ticket-fill"></i>
 
 </div>
 
 
+<h2 class="mt-3">
 
-<h2 class="fw-bold">
-
-{{ total_tickets }}
+{{total_tickets}}
 
 </h2>
-
 
 
 <p class="text-muted">
@@ -86,171 +367,126 @@ Total Tickets
 </p>
 
 
+</div>
 
 </div>
 
 
-</div>
 
 
 
-
-
-
-
-<!-- Open Tickets -->
 
 
 <div class="col-md-4">
 
 
-<div class="card shadow border-0 p-4 text-center">
+<div class="analytics-card">
 
 
-<div class="display-4 text-warning">
+<div class="icon bg-warning bg-opacity-10 text-warning">
 
-<i class="bi bi-clock-history"></i>
+
+<i class="bi bi-clock"></i>
+
 
 </div>
 
 
+<h2 class="mt-3">
 
-<h2 class="fw-bold">
-
-{{ open_tickets }}
+{{open_tickets}}
 
 </h2>
 
 
-
 <p class="text-muted">
 
-Open Tickets
+Pending
 
 </p>
 
 
+</div>
 
 </div>
 
 
-</div>
 
 
-
-
-
-
-
-<!-- Resolved Tickets -->
 
 
 <div class="col-md-4">
 
 
-<div class="card shadow border-0 p-4 text-center">
+<div class="analytics-card">
 
 
-<div class="display-4 text-success">
+<div class="icon bg-success bg-opacity-10 text-success">
+
 
 <i class="bi bi-check-circle"></i>
 
+
 </div>
 
 
+<h2 class="mt-3">
 
-<h2 class="fw-bold">
-
-{{ resolved_tickets }}
+{{resolved_tickets}}
 
 </h2>
-
 
 
 <p class="text-muted">
 
-Resolved Tickets
+Resolved
 
 </p>
 
 
-
 </div>
-
-
-</div>
-
-
 
 </div>
 
 
 
 
-
-
-
-
-<!-- Recent Tickets -->
-
-
-<div class="mt-5">
-
-
-<h2 class="fw-bold mb-4">
-
-📋 Recent Tickets
-
-</h2>
+</div>
 
 
 
 
 
-{% for ticket in recent_tickets %}
 
 
 
-<div class="card shadow border-0 mb-3">
+
+<!-- RECENT TICKETS -->
 
 
-<div class="card-body">
-
+<div class="ticket-box mt-5">
 
 
 <div class="d-flex justify-content-between">
 
 
-<h4 class="fw-bold">
+<h3 class="fw-bold">
 
-{{ ticket.title }}
+Recent Tickets
 
-</h4>
+</h3>
 
 
 
-<span class="badge bg-info">
+<a href="/tickets/my/"
+class="btn btn-primary">
 
-{{ ticket.status }}
+View All
 
-</span>
+</a>
 
 
 </div>
-
-
-
-
-
-<p class="text-muted">
-
-{{ ticket.description|truncatechars:120 }}
-
-</p>
-
-
-
-
 
 <hr>
 
@@ -258,193 +494,88 @@ Resolved Tickets
 
 
 
-<div class="row">
+<table class="table">
+
+
+<tr>
+
+<th>Title</th>
+
+<th>Category</th>
+
+<th>Priority</th>
+
+<th>Status</th>
+
+<th></th>
+
+</tr>
 
 
 
-<div class="col-md-4">
+{% for ticket in recent_tickets %}
 
 
-<b>
-Category:
-</b>
+
+<tr>
 
 
-<span class="badge bg-primary">
+<td>
+
+<strong>
+
+{{ticket.title}}
+
+</strong>
+
+</td>
+
+
+<td>
 
 {{ticket.category}}
 
-</span>
+</td>
 
 
-</div>
+<td>
 
 
+{{ticket.priority}}
 
 
-
-<div class="col-md-4">
-
-
-<b>
-Priority:
-</b>
+</td>
 
 
+<td>
 
-{% if ticket.priority == "urgent" %}
 
+<span class="status bg-primary text-white">
 
-<span class="badge bg-danger">
-
-Urgent
+{{ticket.status}}
 
 </span>
 
 
+</td>
 
-{% elif ticket.priority == "high" %}
 
-
-<span class="badge bg-warning text-dark">
-
-High
-
-</span>
-
-
-
-{% elif ticket.priority == "medium" %}
-
-
-<span class="badge bg-primary">
-
-Medium
-
-</span>
-
-
-
-{% else %}
-
-
-<span class="badge bg-secondary">
-
-Low
-
-</span>
-
-
-{% endif %}
-
-
-
-</div>
-
-
-
-
-
-
-
-<div class="col-md-4">
-
-
-<b>
-AI Sentiment:
-</b>
-
-
-
-{% if ticket.sentiment == "Positive" %}
-
-
-<span class="badge bg-success">
-
-😊 Positive
-
-</span>
-
-
-
-{% elif ticket.sentiment == "Negative" %}
-
-
-<span class="badge bg-danger">
-
-😟 Negative
-
-</span>
-
-
-
-{% else %}
-
-
-<span class="badge bg-secondary">
-
-😐 Neutral
-
-</span>
-
-
-
-{% endif %}
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-<br>
-
-
+<td>
 
 
 <a href="{% url 'ticket_detail' ticket.id %}"
 
-class="btn btn-outline-primary">
+class="btn btn-sm btn-dark">
 
-
-<i class="bi bi-eye"></i>
-
-View Ticket
-
+Open
 
 </a>
 
 
-
-</div>
-
-
-</div>
+</td>
 
 
-
-
-
-{% empty %}
-
-
-
-<div class="alert alert-info">
-
-
-<i class="bi bi-info-circle"></i>
-
-
-No tickets created yet.
-
-
-</div>
+</tr>
 
 
 
@@ -452,12 +583,21 @@ No tickets created yet.
 
 
 
+
+</table>
+
+
 </div>
 
 
 
 
+
 </div>
+
+
+</div>
+
 
 
 
