@@ -15,3 +15,5 @@ staticfiles/
 .idea/
 
 .vscode/
+.env
+.env_old
