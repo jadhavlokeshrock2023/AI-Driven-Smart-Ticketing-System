@@ -1,59 +1,129 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-
-<title>Ticket Detail</title>
-
-</head>
+{% extends "base.html" %}
 
 
-<body>
+{% block content %}
 
 
-<h1>
-    Ticket Details
-</h1>
+<div class="container mt-4">
+
+
+<div class="card shadow">
+
+
+<div class="card-header bg-primary text-white">
+
+<h2 class="mb-0">
+Ticket Details
+</h2>
+
+</div>
+
+
+
+<div class="card-body">
+
+
+
+<h3 class="text-primary">
+{{ ticket.title }}
+</h3>
 
 
 <hr>
 
 
-<h2>
-    {{ ticket.title }}
-</h2>
 
+<div class="row">
+
+
+<div class="col-md-6">
 
 <p>
-<b>Customer:</b>
+<strong>Customer:</strong>
 {{ ticket.customer.username }}
 </p>
 
 
 <p>
-<b>Description:</b>
-{{ ticket.description }}
-</p>
-
-
-<p>
-<b>Category:</b>
+<strong>Category:</strong>
+<span class="badge bg-info">
 {{ ticket.category }}
+</span>
 </p>
 
 
 <p>
-<b>Priority:</b>
+<strong>Priority:</strong>
+
+{% if ticket.priority == "urgent" %}
+
+<span class="badge bg-danger">
 {{ ticket.priority }}
+</span>
+
+{% else %}
+
+<span class="badge bg-warning">
+{{ ticket.priority }}
+</span>
+
+{% endif %}
+
+</p>
+
+
+</div>
+
+
+
+
+<div class="col-md-6">
+
+
+<p>
+
+<strong>Status:</strong>
+
+
+{% if ticket.status == "resolved" %}
+
+<span class="badge bg-success">
+{{ ticket.status }}
+</span>
+
+
+{% elif ticket.status == "progress" %}
+
+
+<span class="badge bg-primary">
+{{ ticket.status }}
+</span>
+
+
+{% else %}
+
+
+<span class="badge bg-secondary">
+{{ ticket.status }}
+</span>
+
+
+{% endif %}
+
+
 </p>
 
 
 <p>
-<b>Status:</b>
-
-{{ ticket.status }}
-
+<strong>Created:</strong>
+{{ ticket.created_at }}
 </p>
+
+
+</div>
+
+
+</div>
 
 
 
@@ -61,94 +131,119 @@
 
 
 
-<h2>
-    Update Status
-</h2>
+<h4>
+Description
+</h4>
+
+
+<div class="alert alert-light">
+
+{{ ticket.description }}
+
+</div>
 
 
 
-<form method="POST" action="{% url 'update_ticket_status' ticket.id %}">
+
+<hr>
+
+
+
+<h4>
+Update Status
+</h4>
+
+
+<form method="POST"
+action="{% url 'update_ticket_status' ticket.id %}">
+
 
 {% csrf_token %}
 
 
-<select name="status">
+<div class="input-group">
+
+
+<select name="status"
+class="form-select">
 
 
 <option value="open"
-{% if ticket.status == "open" %}
-selected
-{% endif %}
->
+{% if ticket.status == "open" %}selected{% endif %}>
 Open
 </option>
 
 
-
 <option value="progress"
-{% if ticket.status == "progress" %}
-selected
-{% endif %}
->
+{% if ticket.status == "progress" %}selected{% endif %}>
 Progress
 </option>
 
 
-
 <option value="resolved"
-{% if ticket.status == "resolved" %}
-selected
-{% endif %}
->
+{% if ticket.status == "resolved" %}selected{% endif %}>
 Resolved
 </option>
-
 
 
 </select>
 
 
-<button type="submit">
-Update Status
+
+<button class="btn btn-success">
+
+Update
+
 </button>
+
+
+</div>
 
 
 </form>
 
 
 
-
 <hr>
 
 
 
-<h2>
-    Conversation
-</h2>
+<h4>
+Conversation
+</h4>
 
+
+
+<div class="card bg-light p-3">
 
 
 {% for comment in comments %}
 
 
-<p>
 
-<b>
+<div class="mb-3">
+
+
+<strong>
 {{ comment.user.username }}
-</b>
+</strong>
 
-:
+
+<p class="mb-1">
 
 {{ comment.message }}
 
-<br>
+</p>
 
-<small>
+
+<small class="text-muted">
+
 {{ comment.created_at }}
+
 </small>
 
 
-</p>
+</div>
 
 
 <hr>
@@ -158,72 +253,88 @@ Update Status
 
 
 <p>
-No comments yet
+No conversation yet
 </p>
 
 
 {% endfor %}
 
 
-
-
-<h2>
-    Add Reply
-</h2>
+</div>
 
 
 
-<form method="POST" action="{% url 'add_ticket_comment' ticket.id %}">
+
+<hr>
+
+
+
+
+<h4>
+Reply Customer
+</h4>
+
+
+
+<form method="POST"
+action="{% url 'add_ticket_comment' ticket.id %}">
 
 
 {% csrf_token %}
 
 
-
 <textarea 
+class="form-control"
 name="message"
 rows="5"
-cols="50"
-placeholder="Type your reply here..."
+placeholder="Write reply to customer..."
 ></textarea>
 
 
 
-<br><br>
+<br>
 
 
+<button class="btn btn-primary">
 
-<button type="submit">
+<i class="bi bi-send"></i>
 Send Reply
-</button>
 
+</button>
 
 
 </form>
 
 
 
-
-<br><br>
-
+<br>
 
 
-<a href="{% url 'agent_dashboard' %}">
-Back to Dashboard
+
+<a href="{% url 'agent_dashboard' %}"
+class="btn btn-secondary">
+
+← Back Dashboard
+
 </a>
 
 
+<a href="/accounts/logout/"
+class="btn btn-danger">
 
-<br><br>
-
-
-
-<a href="/accounts/logout/">
 Logout
+
 </a>
 
 
 
-</body>
+</div>
 
-</html>
+
+</div>
+
+
+</div>
+
+
+{% endblock %}
