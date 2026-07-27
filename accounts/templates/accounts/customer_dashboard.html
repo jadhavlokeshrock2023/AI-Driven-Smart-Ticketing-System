@@ -5,12 +5,16 @@
 
 
 <h1>
-Welcome {{ request.user.username }}
+    Welcome {{ request.user.username }}
 </h1>
+
 
 
 <div class="row mt-4">
 
+
+
+<!-- Create Ticket -->
 
 <div class="col-md-4">
 
@@ -18,12 +22,12 @@ Welcome {{ request.user.username }}
 
 
 <h4>
-Create Ticket
+    Create Ticket
 </h4>
 
 
 <p>
-Create a new support request.
+    Create a new support request.
 </p>
 
 
@@ -42,18 +46,21 @@ Create Ticket
 
 
 
+
+<!-- My Tickets -->
+
 <div class="col-md-4">
 
 <div class="card shadow p-4">
 
 
 <h4>
-My Tickets
+    My Tickets
 </h4>
 
 
 <p>
-View your submitted tickets.
+    View your submitted tickets.
 </p>
 
 
@@ -72,18 +79,21 @@ View Tickets
 
 
 
+
+<!-- Analytics -->
+
 <div class="col-md-4">
 
 <div class="card shadow p-4">
 
 
 <h4>
-Analytics
+    Analytics
 </h4>
 
 
 <p>
-View system analytics.
+    View system analytics.
 </p>
 
 
@@ -102,6 +112,172 @@ Analytics
 
 
 </div>
+
+
+
+
+
+<hr class="mt-5">
+
+
+
+
+
+<h2>
+    My Recent Tickets
+</h2>
+
+
+
+<table class="table table-bordered mt-3">
+
+
+<tr>
+
+<th>
+    Title
+</th>
+
+
+<th>
+    Category
+</th>
+
+
+<th>
+    Priority
+</th>
+
+
+<th>
+    Status
+</th>
+
+
+<th>
+    Agent
+</th>
+
+
+<th>
+    Action
+</th>
+
+
+</tr>
+
+
+
+
+
+{% for ticket in tickets %}
+
+
+
+<tr>
+
+
+<td>
+    {{ ticket.title }}
+</td>
+
+
+
+<td>
+    {{ ticket.category }}
+</td>
+
+
+
+<td>
+    {{ ticket.priority }}
+</td>
+
+
+
+<td>
+
+<span class="badge bg-info">
+
+{{ ticket.status }}
+
+</span>
+
+</td>
+
+
+
+<td>
+
+{% if ticket.assigned_agent %}
+
+{{ ticket.assigned_agent.username }}
+
+{% else %}
+
+Not Assigned
+
+{% endif %}
+
+</td>
+
+
+
+
+<td>
+
+<a href="{% url 'customer_ticket_detail' ticket.id %}"
+class="btn btn-info">
+
+View
+
+</a>
+
+</td>
+
+
+
+</tr>
+
+
+
+
+{% empty %}
+
+
+
+<tr>
+
+<td colspan="6">
+
+No tickets created yet.
+
+</td>
+
+</tr>
+
+
+
+{% endfor %}
+
+
+
+</table>
+
+
+
+
+
+<br>
+
+
+
+<a href="/accounts/logout/"
+class="btn btn-danger">
+
+Logout
+
+</a>
 
 
 

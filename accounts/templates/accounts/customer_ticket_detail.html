@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<h1>
+Ticket Details
+</h1>
+
+
+<hr>
+
+
+<h3>
+{{ ticket.title }}
+</h3>
+
+
+
+<p>
+<b>Description:</b>
+{{ ticket.description }}
+</p>
+
+
+
+<p>
+<b>Category:</b>
+{{ ticket.category }}
+</p>
+
+
+
+<p>
+<b>Priority:</b>
+{{ ticket.priority }}
+</p>
+
+
+
+<p>
+<b>Status:</b>
+
+<span class="badge bg-info">
+{{ ticket.status }}
+</span>
+
+</p>
+
+
+
+<p>
+<b>Assigned Agent:</b>
+
+{% if ticket.assigned_agent %}
+
+{{ ticket.assigned_agent.username }}
+
+{% else %}
+
+Not Assigned
+
+{% endif %}
+
+</p>
+
+
+
+<hr>
+
+
+
+<h2>
+Conversation
+</h2>
+
+
+
+{% for comment in comments %}
+
+
+
+<div class="card shadow p-3 mb-3">
+
+
+<b>
+{{ comment.user.username }}
+</b>
+
+
+<p>
+{{ comment.message }}
+</p>
+
+
+<small>
+{{ comment.created_at }}
+</small>
+
+
+</div>
+
+
+
+{% empty %}
+
+
+<p>
+No replies yet.
+</p>
+
+
+{% endfor %}
+
+
+
+
+
+<hr>
+
+
+
+<h2>
+Reply to Agent
+</h2>
+
+
+
+<form method="POST"
+action="{% url 'add_ticket_comment' ticket.id %}">
+
+
+{% csrf_token %}
+
+
+
+<textarea 
+name="message"
+class="form-control"
+rows="5"
+placeholder="Write your message...">
+</textarea>
+
+
+
+<br>
+
+
+
+<button type="submit"
+class="btn btn-primary">
+
+Send Reply
+
+</button>
+
+
+
+</form>
+
+
+
+
+<br>
+
+
+
+<a href="{% url 'customer_dashboard' %}"
+class="btn btn-secondary">
+
+Back to Dashboard
+
+</a>
+
+
+
+{% endblock %}

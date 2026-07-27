@@ -61,4 +61,9 @@ path(
     views.add_ticket_comment,
     name="add_ticket_comment"
 ),
+path(
+    "customer/ticket/<int:id>/",
+    views.customer_ticket_detail,
+    name="customer_ticket_detail"
+),
 ]

@@ -82,7 +82,19 @@ def logout_view(request):
 # ==========================
 @login_required
 def customer_dashboard(request):
-    return render(request, "accounts/customer_dashboard.html")
+
+    tickets = Ticket.objects.filter(
+        customer=request.user
+    ).order_by("-created_at")
+
+
+    return render(
+        request,
+        "accounts/customer_dashboard.html",
+        {
+            "tickets": tickets
+        }
+    )
 
 
 # ==========================
@@ -206,4 +218,30 @@ def add_ticket_comment(request, id):
     return redirect(
         "agent_ticket_detail",
         id=id
+    )
+
+@login_required
+def customer_ticket_detail(request, id):
+
+    ticket = get_object_or_404(
+        Ticket,
+        id=id,
+        customer=request.user
+    )
+
+
+    comments = TicketComment.objects.filter(
+        ticket=ticket
+    ).order_by(
+        "created_at"
+    )
+
+
+    return render(
+        request,
+        "accounts/customer_ticket_detail.html",
+        {
+            "ticket": ticket,
+            "comments": comments
+        }
     )
