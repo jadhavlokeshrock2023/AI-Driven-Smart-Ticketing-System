@@ -87,10 +87,24 @@ def customer_dashboard(request):
 # ==========================
 # Agent Dashboard
 # ==========================
+from tickets.models import Ticket
+
+
 @login_required
 def agent_dashboard(request):
-    return render(request, "accounts/agent_dashboard.html")
 
+    tickets = Ticket.objects.filter(
+        assigned_agent=request.user
+    ).order_by("-created_at")
+
+
+    return render(
+        request,
+        "accounts/agent_dashboard.html",
+        {
+            "tickets": tickets
+        }
+    )
 
 # ==========================
 # Admin Dashboard
