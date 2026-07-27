@@ -1,15 +1,12 @@
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
-
     path(
         "register/",
         views.register,
         name="register"
     ),
-
 
     path(
         "login/",
@@ -17,13 +14,11 @@ urlpatterns = [
         name="login"
     ),
 
-
     path(
         "logout/",
         views.logout_view,
         name="logout"
     ),
-
 
     path(
         "dashboard/",
@@ -31,4 +26,21 @@ urlpatterns = [
         name="dashboard"
     ),
 
+    path(
+        "customer/",
+        views.customer_dashboard,
+        name="customer_dashboard"
+    ),
+
+    path(
+        "agent/",
+        views.agent_dashboard,
+        name="agent_dashboard"
+    ),
+
+    path(
+        "admin-dashboard/",
+        views.admin_dashboard,
+        name="admin_dashboard"
+    ),
 ]
