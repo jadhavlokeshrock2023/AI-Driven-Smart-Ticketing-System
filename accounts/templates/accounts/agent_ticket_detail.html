@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Ticket Detail</title>
+</head>
+
+<body>
+
+
+<h1>
+Ticket Details
+</h1>
+
+
+<h3>
+{{ ticket.title }}
+</h3>
+
+
+<p>
+<b>Customer:</b>
+{{ ticket.customer.username }}
+</p>
+
+
+<p>
+<b>Description:</b>
+{{ ticket.description }}
+</p>
+
+
+<p>
+<b>Category:</b>
+{{ ticket.category }}
+</p>
+
+
+<p>
+<b>Priority:</b>
+{{ ticket.priority }}
+</p>
+
+
+<p>
+<b>Status:</b>
+{{ ticket.status }}
+</p>
+
+
+
+<h2>
+Update Status
+</h2>
+
+
+<form method="POST"
+action="{% url 'update_ticket_status' ticket.id %}">
+
+{% csrf_token %}
+
+
+<select name="status">
+
+<option value="open">
+Open
+</option>
+
+<option value="progress">
+Progress
+</option>
+
+<option value="resolved">
+Resolved
+</option>
+
+</select>
+
+
+<button type="submit">
+Update
+</button>
+
+
+</form>
+
+
+
+<h2>
+Comments
+</h2>
+
+
+{% for comment in comments %}
+
+<p>
+<b>{{comment.user.username}}</b>
+:
+{{comment.message}}
+</p>
+
+{% empty %}
+
+<p>
+No comments
+</p>
+
+{% endfor %}
+
+
+
+
+<h3>
+Add Reply
+</h3>
+
+
+<form method="POST"
+action="{% url 'add_ticket_comment' ticket.id %}">
+
+{% csrf_token %}
+
+
+<textarea name="message"></textarea>
+
+
+<br>
+
+
+<button type="submit">
+Send Reply
+</button>
+
+
+</form>
+
+
+
+<br>
+
+<a href="{% url 'agent_dashboard' %}">
+Back
+</a>
+
+
+</body>
+
+</html>
