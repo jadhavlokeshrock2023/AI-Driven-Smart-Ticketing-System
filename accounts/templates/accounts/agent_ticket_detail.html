@@ -2,20 +2,26 @@
 <html>
 
 <head>
+
 <title>Ticket Detail</title>
+
 </head>
+
 
 <body>
 
 
 <h1>
-Ticket Details
+    Ticket Details
 </h1>
 
 
-<h3>
-{{ ticket.title }}
-</h3>
+<hr>
+
+
+<h2>
+    {{ ticket.title }}
+</h2>
 
 
 <p>
@@ -44,41 +50,66 @@ Ticket Details
 
 <p>
 <b>Status:</b>
+
 {{ ticket.status }}
+
 </p>
 
 
 
+<hr>
+
+
+
 <h2>
-Update Status
+    Update Status
 </h2>
 
 
-<form method="POST"
-action="{% url 'update_ticket_status' ticket.id %}">
+
+<form method="POST" action="{% url 'update_ticket_status' ticket.id %}">
 
 {% csrf_token %}
 
 
 <select name="status">
 
-<option value="open">
+
+<option value="open"
+{% if ticket.status == "open" %}
+selected
+{% endif %}
+>
 Open
 </option>
 
-<option value="progress">
+
+
+<option value="progress"
+{% if ticket.status == "progress" %}
+selected
+{% endif %}
+>
 Progress
 </option>
 
-<option value="resolved">
+
+
+<option value="resolved"
+{% if ticket.status == "resolved" %}
+selected
+{% endif %}
+>
 Resolved
 </option>
+
+
 
 </select>
 
 
 <button type="submit">
-Update
+Update Status
 </button>
 
 
@@ -86,45 +117,80 @@ Update
 
 
 
+
+<hr>
+
+
+
 <h2>
-Comments
+    Conversation
 </h2>
+
 
 
 {% for comment in comments %}
 
+
 <p>
-<b>{{comment.user.username}}</b>
+
+<b>
+{{ comment.user.username }}
+</b>
+
 :
-{{comment.message}}
+
+{{ comment.message }}
+
+<br>
+
+<small>
+{{ comment.created_at }}
+</small>
+
+
 </p>
+
+
+<hr>
+
 
 {% empty %}
 
+
 <p>
-No comments
+No comments yet
 </p>
+
 
 {% endfor %}
 
 
 
 
-<h3>
-Add Reply
-</h3>
+<h2>
+    Add Reply
+</h2>
 
 
-<form method="POST"
-action="{% url 'add_ticket_comment' ticket.id %}">
+
+<form method="POST" action="{% url 'add_ticket_comment' ticket.id %}">
+
 
 {% csrf_token %}
 
 
-<textarea name="message"></textarea>
+
+<textarea 
+name="message"
+rows="5"
+cols="50"
+placeholder="Type your reply here..."
+></textarea>
 
 
-<br>
+
+<br><br>
+
 
 
 <button type="submit">
@@ -132,15 +198,30 @@ Send Reply
 </button>
 
 
+
 </form>
 
 
 
-<br>
+
+<br><br>
+
+
 
 <a href="{% url 'agent_dashboard' %}">
-Back
+Back to Dashboard
 </a>
+
+
+
+<br><br>
+
+
+
+<a href="/accounts/logout/">
+Logout
+</a>
+
 
 
 </body>
