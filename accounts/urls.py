@@ -66,4 +66,9 @@ path(
     views.customer_ticket_detail,
     name="customer_ticket_detail"
 ),
+path(
+    "admin/ticket/<int:id>/assign/",
+    views.assign_ticket,
+    name="assign_ticket"
+),
 ]

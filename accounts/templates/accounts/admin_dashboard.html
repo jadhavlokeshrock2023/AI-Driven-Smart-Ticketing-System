@@ -1,32 +1,258 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-<title>Admin Dashboard</title>
-</head>
 
-<body>
+{% block content %}
+
 
 <h1>
-Admin Dashboard
+    Admin Dashboard
 </h1>
 
 
 <h3>
-Welcome {{user.username}}
+    Welcome {{ request.user.username }}
 </h3>
 
 
 <p>
-Manage the complete AI Smart Ticketing System.
+    Manage the complete AI Smart Ticketing System.
 </p>
 
 
-<a href="/accounts/logout/">
-Logout
+<hr>
+
+
+<h2>
+    All Tickets
+</h2>
+
+
+
+<table border="1" cellpadding="10">
+
+
+<tr>
+
+<th>
+Title
+</th>
+
+
+<th>
+Customer
+</th>
+
+
+<th>
+Assigned Agent
+</th>
+
+
+<th>
+Category
+</th>
+
+
+<th>
+Priority
+</th>
+
+
+<th>
+Status
+</th>
+
+
+<th>
+Action
+</th>
+
+</tr>
+
+
+
+{% for ticket in tickets %}
+
+
+<tr>
+
+
+<td>
+{{ ticket.title }}
+</td>
+
+
+
+<td>
+{{ ticket.customer.username }}
+</td>
+
+
+
+<td>
+
+{% if ticket.assigned_agent %}
+
+{{ ticket.assigned_agent.username }}
+
+{% else %}
+
+Not Assigned
+
+{% endif %}
+
+
+</td>
+
+
+
+<td>
+{{ ticket.category }}
+</td>
+
+
+
+<td>
+{{ ticket.priority }}
+</td>
+
+
+
+<td>
+{{ ticket.status }}
+</td>
+
+
+
+<td>
+
+<a href="{% url 'assign_ticket' ticket.id %}">
+
+Assign Agent
+
 </a>
 
 
-</body>
+</td>
 
-</html>
+
+</tr>
+
+
+
+{% empty %}
+
+
+<tr>
+
+<td colspan="7">
+
+No tickets available
+
+</td>
+
+</tr>
+
+
+{% endfor %}
+
+
+
+</table>
+
+
+
+<hr>
+
+
+
+<h2>
+All Users
+</h2>
+
+
+
+<table border="1" cellpadding="10">
+
+
+<tr>
+
+<th>
+Username
+</th>
+
+
+<th>
+Role
+</th>
+
+
+<th>
+Email
+</th>
+
+
+</tr>
+
+
+
+
+{% for user in users %}
+
+
+<tr>
+
+
+<td>
+{{ user.username }}
+</td>
+
+
+<td>
+{{ user.role }}
+</td>
+
+
+<td>
+{{ user.email }}
+</td>
+
+
+</tr>
+
+
+{% empty %}
+
+
+<tr>
+
+<td colspan="3">
+
+No users found
+
+</td>
+
+</tr>
+
+
+{% endfor %}
+
+
+
+</table>
+
+
+
+
+<br>
+
+
+<a href="/accounts/logout/">
+
+Logout
+
+</a>
+
+
+
+{% endblock %}

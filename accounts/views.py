@@ -245,3 +245,51 @@ def customer_ticket_detail(request, id):
             "comments": comments
         }
     )
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+
+@login_required
+def assign_ticket(request, id):
+
+    ticket = get_object_or_404(
+        Ticket,
+        id=id
+    )
+
+
+    agents = User.objects.filter(
+        role="agent"
+    )
+
+
+    if request.method == "POST":
+
+        agent_id = request.POST.get("agent")
+
+
+        agent = User.objects.get(
+            id=agent_id
+        )
+
+
+        ticket.assigned_agent = agent
+
+        ticket.save()
+
+
+        return redirect(
+            "admin_dashboard"
+        )
+
+
+    return render(
+        request,
+        "accounts/assign_ticket.html",
+        {
+            "ticket":ticket,
+            "agents":agents
+        }
+    )
