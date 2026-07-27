@@ -522,3 +522,39 @@ from django.shortcuts import render
 
 def ticket_home(request):
     return render(request, "home.html")
+
+from django.shortcuts import get_object_or_404, redirect
+from .models import Ticket, Comment
+from ai.reply_generator import generate_reply
+
+
+
+@login_required
+def ai_reply(request, id):
+
+    ticket = get_object_or_404(
+        Ticket,
+        id=id
+    )
+
+
+    ai_response = generate_reply(
+        ticket.description
+    )
+
+
+    Comment.objects.create(
+
+        ticket=ticket,
+
+        user=request.user,
+
+        message=ai_response
+
+    )
+
+
+    return redirect(
+        "ticket_detail",
+        id=ticket.id
+    )

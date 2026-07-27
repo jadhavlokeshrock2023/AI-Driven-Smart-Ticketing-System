@@ -17,7 +17,6 @@
 
 <style>
 
-
 body{
 
 background:#f1f5f9;
@@ -72,16 +71,25 @@ margin-bottom:15px;
 }
 
 
+.ai-message{
+
+background:#dcfce7;
+border-left:5px solid #16a34a;
+
+}
+
+
 </style>
 
 </head>
 
 
+
 <body>
 
 
-<div class="ticket-header">
 
+<div class="ticket-header">
 
 <div class="container">
 
@@ -99,7 +107,6 @@ Ticket Details
 
 </div>
 
-
 </div>
 
 
@@ -107,7 +114,6 @@ Ticket Details
 
 
 <div class="container mt-5">
-
 
 
 <div class="row g-4">
@@ -131,23 +137,22 @@ Ticket Information
 <hr>
 
 
+
 <div class="info-box">
 
 
 <p>
 <b>Customer:</b>
-
 {{ ticket.customer.username }}
-
 </p>
+
 
 
 <p>
 <b>Description:</b>
-
 {{ ticket.description }}
-
 </p>
+
 
 
 <p>
@@ -163,9 +168,10 @@ Ticket Information
 
 
 
-<p>
-<b>Priority:</b>
 
+<p>
+
+<b>Priority:</b>
 
 <span class="badge bg-danger">
 
@@ -179,6 +185,7 @@ Ticket Information
 
 
 <p>
+
 <b>Status:</b>
 
 
@@ -209,6 +216,7 @@ Ticket Information
 
 
 <p>
+
 <b>Created:</b>
 
 {{ ticket.created_at|date:"d M Y H:i" }}
@@ -228,6 +236,8 @@ Ticket Information
 
 
 
+
+
 <!-- Conversation -->
 
 
@@ -235,6 +245,7 @@ Ticket Information
 
 
 <div class="card card-box p-4">
+
 
 
 <h3>
@@ -250,6 +261,7 @@ Conversation
 
 
 
+
 <div class="chat-box">
 
 
@@ -257,11 +269,22 @@ Conversation
 {% for comment in comments %}
 
 
-<div class="message">
+
+<div class="message 
+
+{% if comment.user.role == 'admin' %}
+
+ai-message
+
+{% endif %}
+
+">
 
 
 <b>
+
 {{ comment.user.username }}
+
 </b>
 
 
@@ -295,7 +318,6 @@ No conversation yet.
 </p>
 
 
-
 {% endfor %}
 
 
@@ -308,9 +330,17 @@ No conversation yet.
 <hr>
 
 
+
+
+<!-- Normal Reply -->
+
+
 <h5>
+
 Add Reply
+
 </h5>
+
 
 
 <form method="POST"
@@ -318,6 +348,7 @@ action="{% url 'add_comment' ticket.id %}">
 
 
 {% csrf_token %}
+
 
 
 <textarea 
@@ -328,14 +359,18 @@ placeholder="Type your message...">
 </textarea>
 
 
+
 <br>
+
 
 
 <button class="btn btn-primary">
 
+
 <i class="bi bi-send"></i>
 
 Send Reply
+
 
 </button>
 
@@ -344,13 +379,47 @@ Send Reply
 
 
 
-</div>
+
+<br>
+
+
+
+
+<!-- AI Reply Button -->
+
+
+<form method="POST"
+action="{% url 'ai_reply' ticket.id %}">
+
+
+{% csrf_token %}
+
+
+
+<button class="btn btn-success">
+
+
+<i class="bi bi-robot"></i>
+
+Generate AI Reply
+
+
+</button>
+
+
+</form>
+
+
 
 
 </div>
 
 
 </div>
+
+
+</div>
+
 
 
 
@@ -360,6 +429,7 @@ Send Reply
 
 
 <a href="javascript:history.back()"
+
 class="btn btn-secondary">
 
 
