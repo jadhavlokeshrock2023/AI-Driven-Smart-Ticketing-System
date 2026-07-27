@@ -43,4 +43,22 @@ urlpatterns = [
         views.admin_dashboard,
         name="admin_dashboard"
     ),
+
+    path(
+    "agent/ticket/<int:id>/",
+    views.agent_ticket_detail,
+    name="agent_ticket_detail"
+),
+
+path(
+    "agent/ticket/<int:id>/status/",
+    views.update_ticket_status,
+    name="update_ticket_status"
+),
+
+path(
+    "agent/ticket/<int:id>/comment/",
+    views.add_ticket_comment,
+    name="add_ticket_comment"
+),
 ]

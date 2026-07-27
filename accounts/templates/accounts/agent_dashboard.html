@@ -33,6 +33,7 @@
     <th>Category</th>
     <th>Priority</th>
     <th>Status</th>
+    <th>Action</th>
 </tr>
 
 
@@ -44,30 +45,45 @@
         {{ ticket.title }}
     </td>
 
+
     <td>
         {{ ticket.customer.username }}
     </td>
+
 
     <td>
         {{ ticket.category }}
     </td>
 
+
     <td>
         {{ ticket.priority }}
     </td>
+
 
     <td>
         {{ ticket.status }}
     </td>
 
+
+    <td>
+        <a href="{% url 'agent_ticket_detail' ticket.id %}">
+            View Ticket
+        </a>
+    </td>
+
+
 </tr>
+
 
 {% empty %}
 
 <tr>
-    <td colspan="5">
+
+    <td colspan="6">
         No tickets assigned
     </td>
+
 </tr>
 
 {% endfor %}
@@ -77,6 +93,7 @@
 
 
 <br>
+
 
 <a href="/accounts/logout/">
     Logout

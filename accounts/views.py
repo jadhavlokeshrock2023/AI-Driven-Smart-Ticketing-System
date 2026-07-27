@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm
+from tickets.models import Ticket, TicketComment
 
 
 # ==========================
@@ -129,3 +130,80 @@ def dashboard(request):
         return redirect("customer_dashboard")
 
     return render(request, "accounts/dashboard.html")
+
+# ==========================
+# Agent Ticket Detail
+# ==========================
+
+@login_required
+def agent_ticket_detail(request, id):
+
+    ticket = Ticket.objects.get(id=id)
+
+    comments = TicketComment.objects.filter(
+        ticket=ticket
+    ).order_by("created_at")
+
+
+    return render(
+        request,
+        "accounts/agent_ticket_detail.html",
+        {
+            "ticket": ticket,
+            "comments": comments
+        }
+    )
+
+
+
+# ==========================
+# Update Ticket Status
+# ==========================
+
+@login_required
+def update_ticket_status(request, id):
+
+    ticket = Ticket.objects.get(id=id)
+
+
+    if request.method == "POST":
+
+        status = request.POST.get("status")
+
+        ticket.status = status
+        ticket.save()
+
+
+    return redirect(
+        "agent_ticket_detail",
+        id=id
+    )
+
+
+
+# ==========================
+# Add Comment
+# ==========================
+
+@login_required
+def add_ticket_comment(request, id):
+
+    ticket = Ticket.objects.get(id=id)
+
+
+    if request.method == "POST":
+
+        message = request.POST.get("message")
+
+
+        TicketComment.objects.create(
+            ticket=ticket,
+            user=request.user,
+            message=message
+        )
+
+
+    return redirect(
+        "agent_ticket_detail",
+        id=id
+    )
