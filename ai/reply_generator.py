@@ -2,7 +2,7 @@
 # AI Reply Generator
 # ==========================================
 
-from ai.gemini import ask_gemini
+from ai.groq_ai import ask_groq
 
 
 
@@ -60,7 +60,7 @@ Do not add explanations.
     try:
 
 
-        reply = ask_gemini(
+        reply = ask_groq(
             prompt
         )
 
@@ -84,7 +84,7 @@ Do not add explanations.
 
 
         print(
-            "Gemini Reply Error:",
+             "Groq Reply Error:",
             e
         )
 
