@@ -125,7 +125,6 @@ body{
 
 <!-- Header -->
 
-
 <div class="page-header">
 
 
@@ -149,7 +148,15 @@ My Tickets
 
 <p class="mb-0">
 
-Track and manage your support requests
+Welcome {{ request.user.username }}
+
+</p>
+
+
+<p class="mb-0">
+
+Track and manage your support requests |
+{{ tickets|length }} Tickets
 
 </p>
 
@@ -158,7 +165,8 @@ Track and manage your support requests
 
 
 
-<a href="/tickets/create/" class="btn btn-create">
+<a href="{% url 'create_ticket' %}" 
+class="btn btn-create">
 
 
 <i class="bi bi-plus-circle"></i>
@@ -218,6 +226,7 @@ Create Ticket
 <div class="info-box mb-3">
 
 
+
 <p class="mb-2">
 
 <i class="bi bi-grid-fill text-primary"></i>
@@ -227,6 +236,7 @@ Create Ticket
 {{ ticket.category }}
 
 </p>
+
 
 
 
@@ -242,20 +252,58 @@ Create Ticket
 
 
 
+
 <p class="mb-2">
+
 
 <i class="bi bi-clock-fill text-success"></i>
 
 <b>Status:</b>
 
-<span class="badge bg-primary badge-status">
+
+
+{% if ticket.status == "closed" or ticket.status == "resolved" %}
+
+
+<span class="badge bg-success badge-status">
 
 {{ ticket.status }}
 
 </span>
 
 
+
+{% elif ticket.status == "progress" %}
+
+
+
+<span class="badge bg-warning text-dark badge-status">
+
+{{ ticket.status }}
+
+</span>
+
+
+
+{% else %}
+
+
+
+<span class="badge bg-danger badge-status">
+
+{{ ticket.status }}
+
+</span>
+
+
+
+{% endif %}
+
+
+
 </p>
+
+
 
 
 
@@ -272,11 +320,15 @@ Create Ticket
 </p>
 
 
+
 </div>
 
 
 
-<a href="/tickets/{{ticket.id}}/" 
+
+
+<a href="{% url 'ticket_detail' ticket.id %}"
+
 class="btn btn-outline-primary w-100">
 
 
@@ -286,6 +338,7 @@ View Ticket
 
 
 </a>
+
 
 
 
@@ -304,10 +357,10 @@ View Ticket
 
 
 
-<div class="text-center">
+<div class="col-12">
 
 
-<div class="card p-5 shadow-sm border-0">
+<div class="card p-5 shadow-sm border-0 text-center">
 
 
 <h3>
@@ -326,10 +379,14 @@ You have not created any support tickets yet.
 </p>
 
 
-<a href="/tickets/create/" class="btn btn-primary">
+
+<a href="{% url 'create_ticket' %}"
+
+class="btn btn-primary">
 
 
 Create Your First Ticket
+
 
 </a>
 
@@ -346,6 +403,27 @@ Create Your First Ticket
 
 
 </div>
+
+
+</div>
+
+
+
+
+<div class="container mt-4 mb-5 text-center">
+
+
+<a href="{% url 'customer_dashboard' %}"
+
+class="btn btn-secondary">
+
+
+<i class="bi bi-arrow-left"></i>
+
+Back to Dashboard
+
+
+</a>
 
 
 </div>

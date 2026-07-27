@@ -16,10 +16,11 @@ urlpatterns = [
     ),
 
     path(
-        "my/",
+        "my-tickets/",
         views.my_tickets,
         name="my_tickets"
     ),
+
 
     path(
         "agent/",
