@@ -2,8 +2,7 @@
 # AI Reply Generator
 # ==========================================
 
-from ai.groq_ai import ask_groq
-
+from ai.groq import ask_groq
 
 
 
