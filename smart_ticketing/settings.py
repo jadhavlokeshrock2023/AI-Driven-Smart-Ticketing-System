@@ -115,16 +115,16 @@ WSGI_APPLICATION = 'smart_ticketing.wsgi.application'
 # Local Database (No PostgreSQL required)
 
 # DATABASE
-import dj_database_url
+# DATABASE
 
+import dj_database_url
 
 DATABASES = {
     "default": dj_database_url.config(
+        default="sqlite:///db.sqlite3",
         conn_max_age=600,
-       
     )
 }
-
 
 # PASSWORD VALIDATION
 
