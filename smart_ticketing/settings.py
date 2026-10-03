@@ -119,10 +119,16 @@ WSGI_APPLICATION = 'smart_ticketing.wsgi.application'
 
 import dj_database_url
 
+DATABASE_URL = os.getenv("DATABASE_URL", "")
+
 DATABASES = {
     "default": dj_database_url.config(
+        default=DATABASE_URL,
         conn_max_age=600,
-        ssl_require=True
+        ssl_require=not (
+            "localhost" in DATABASE_URL
+            or "127.0.0.1" in DATABASE_URL
+        ),
     )
 }
 
