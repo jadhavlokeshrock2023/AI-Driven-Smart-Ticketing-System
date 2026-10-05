@@ -136,7 +136,7 @@ def customer_dashboard(request):
 
     return render(
         request,
-        "dashboard.html",
+        "dashboard/dashboard.html",
         {
             "tickets": tickets,
             "recent_tickets": recent_tickets,
