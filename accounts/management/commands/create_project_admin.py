@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 
 
 class Command(BaseCommand):
-    help = "Create the project administrator"
+    help = "Create or reset the project administrator"
 
     def handle(self, *args, **options):
         User = get_user_model()
@@ -16,20 +16,40 @@ class Command(BaseCommand):
         password = os.environ.get("PROJECT_ADMIN_PASSWORD")
 
         if not all([username, email, password]):
-            raise CommandError("Admin environment variables are missing.")
+            raise CommandError(
+                "Admin environment variables are missing."
+            )
 
-        if User.objects.filter(username=username).exists():
-            raise CommandError("Admin username already exists.")
+        user = User.objects.filter(username=username).first()
 
-        user = User.objects.create_superuser(
-            username=username,
-            email=email,
-            password=password,
-        )
+        if user:
+            self.stdout.write("Existing admin account found.")
+            user.email = email
+            user.set_password(password)
+            user.is_staff = True
+            user.is_superuser = True
+            user.is_active = True
+            user.role = "admin"
+            user.save()
 
-        user.role = "admin"
-        user.save(update_fields=["role"])
+            self.stdout.write(
+                self.style.SUCCESS(
+                    "Administrator password reset successfully."
+                )
+            )
 
-        self.stdout.write(
-            self.style.SUCCESS("Administrator created successfully.")
-        )
+        else:
+            user = User.objects.create_superuser(
+                username=username,
+                email=email,
+                password=password,
+            )
+
+            user.role = "admin"
+            user.save()
+
+            self.stdout.write(
+                self.style.SUCCESS(
+                    "Administrator created successfully."
+                )
+            )
